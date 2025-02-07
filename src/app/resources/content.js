@@ -96,8 +96,8 @@ const about = {
         role: "Software Engineer",
         achievements: [
           <>
-            Designed the architecture and built the components for data migrations that
-            onboarded 2 million users onto the platform.
+            Designed the architecture and built the components for data migrations
+            that facilitated the onboarding of 2 million users onto the platform.
           </>,
           <>
             Redesigned the process for changing credentials, increasing their security and enabling auditability.
