@@ -34,7 +34,7 @@ const social = [
   {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/in/alvaromaoc",
+    link: "https://www.linkedin.com/in/alvaromanoso",
   },
   /* {
     name: "X",
