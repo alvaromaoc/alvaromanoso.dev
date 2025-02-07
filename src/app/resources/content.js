@@ -81,8 +81,8 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Álvaro is a Spain-based software architect with a passion for transforming complex challenges
-        into simple, versatile and scalable architecture solutions.
+        Álvaro is a software architect based in Spain with a passion for transforming
+        complex challenges into simple, versatile, and scalable architecture solutions.
       </>
     ),
   },
@@ -96,12 +96,11 @@ const about = {
         role: "Software Engineer",
         achievements: [
           <>
-            Designed the architecture and built the components for data migrations that onboarded 2 million
-            users into the platform.
+            Designed the architecture and built the components for data migrations that
+            onboarded 2 million users onto the platform.
           </>,
           <>
-            Redesigned the way the credentials were being changed increasing their security and
-            allowing their auditability.
+            Redesigned the process for changing credentials, increasing their security and enabling auditability.
           </>,
         ],
         images: [
@@ -120,8 +119,8 @@ const about = {
         role: "Junior Software Engineer",
         achievements: [
           <>
-            Built an entire end-to-end CI/CD pipeline with GitHub actions integrating SDLC controls that reduced the
-            delivery time by 14 times.
+            Built an entire end-to-end CI/CD pipeline with GitHub Actions, integrating SDLC controls
+            that reduced delivery time by a factor of 14.
           </>,
         ],
         images: [],
@@ -132,8 +131,8 @@ const about = {
         role: "Intern Software Engineer",
         achievements: [
           <>
-            Designed and developed a new platform to manage the building technical inspection and all its involved
-            requirements, also allowing the neighbourhood communities to be part of the process.
+            Designed and developed a new platform to manage building technical inspections and
+            all associated requirements, also enabling neighbourhood communities to be part of the process.
           </>,
         ],
         images: [],
