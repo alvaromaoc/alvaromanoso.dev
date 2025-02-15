@@ -1,0 +1,214 @@
+---
+title: "An enhanced Strategy Design Pattern for real-world applications"
+publishedAt: "2025-02-15"
+summary: "Learn how to implement the Strategy Design Pattern in real-world applications using Quarkus, with dynamic strategy selection at runtime."
+tag: "Software Architecture"
+---
+
+Design patterns are very popular among software engineers. However, only a few of them prove truly useful when dealing with real-world projects and commonly used frameworks and libraries.
+
+In this post, we will dive deep into the **Strategy Design Pattern** and explore how to leverage its functionality in real-world applications.
+
+## What is the Strategy Design Pattern?
+The **Strategy Design Pattern** is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each one in a separate class, and make their objects interchangeable.
+
+The key characteristics of this design pattern are:
+- **Avoids excessive use of if-else statements** by encapsulating different behaviors in separate classes.
+- **Easily extendable** – to modify the existing code, you just need to add a new strategy.
+- **Promotes the Open/Closed Principle**, making the code open for extension but closed for modification.
+
+A common example used to illustrate this pattern is a _payment system_. Consider this scenario:
+
+You are building a payment system where users can pay using different methods such as:
+-   Credit Card
+-   PayPal
+-   Cryptocurrency
+
+Each payment method has different processing logic. If you write all of them inside a single class, your code will become messy and difficult to maintain.
+
+Instead of writing all payment logic in one place, you:
+
+1. **Create an interface** (or abstract class) that defines a common method, e.g., <InlineCode>pay(double amount)</InlineCode>.
+2. **Implement separate classes** for each payment method, each following that interface.
+3. **Use each class interchangeably** depending on the use case.
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `
+public interface PaymentStrategy {
+    void pay(double amount);
+}
+                   `,
+                   label: 'Strategy Interface',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `
+public class CreditCardPayment implements PaymentStrategy {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using Credit Card.");
+    }
+}
+
+public class PayPalPayment implements PaymentStrategy {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using PayPal.");
+    }
+}
+
+public class CryptoPayment implements PaymentStrategy {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using Cryptocurrency.");
+    }
+}
+                        `,
+                   label: 'Strategy Implementations',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+That's cool! But in real applications, most of the time, we don't manually choose which strategy our code will use—we need this to be determined dynamically at runtime based on certain conditions.
+
+## Using the Strategy Design Pattern in the Quarkus Framework
+Now, let's see how we can leverage this design pattern in a Quarkus-based application, making our implementation capable of switching strategies dynamically at runtime.
+
+Following the _payment system_ example, our application may need to execute each payment strategy based on certain conditions, such as a user's selection.
+
+Imagine that the payment method is determined when an HTTP request is made to a REST endpoint. In that request, a parameter will likely indicate the desired payment method.
+
+Here's an example of an HTTP request body being deserialized using the following record:
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `
+public record PaymentRequest(
+    double amount,
+    String paymentMethod
+) {
+}
+                        `,
+                   label: 'Payment Request',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+We need a class capable of deciding which payment strategy to use based on the <InlineCode>paymentMethod</InlineCode> parameter. We will take advantage of Quarkus' dependency injection mechanism to build the following service.
+
+First, we need to extend the <InlineCode>PaymentStrategy</InlineCode> interface by adding a method that allows us to identify each payment strategy by its name:
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `
+public interface PaymentStrategy {
+    String name();
+    void pay(double amount);
+}
+                        `,
+                   label: 'Strategy Interface',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+Each <InlineCode>PaymentStrategy</InlineCode> implementation must implement the <InlineCode>name</InlineCode> method, ensuring that the values are unique among all implementations.
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `
+public class CreditCardPayment implements PaymentStrategy {
+    @Override
+    public void name() {
+        return "Credit card";
+    }
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using Credit Card.");
+    }
+}
+
+public class PayPalPayment implements PaymentStrategy {
+    @Override
+    public void name() {
+        return "PayPal";
+    }
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using PayPal.");
+    }
+}
+
+public class CryptoPayment implements PaymentStrategy {
+    @Override
+    public void name() {
+        return "Crypto";
+    }
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using Cryptocurrency.");
+    }
+}
+                        `,
+                   label: 'Strategy Implementations',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+Next, we inject all implementations into a <InlineCode>PaymentService</InlineCode> class, which will perform the payment based on the payment method specified in the <InlineCode>PaymentRequest</InlineCode>.
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `
+@ApplicationScoped
+public class PaymentService {
+    private final Map<String, PaymentStrategy> paymentStrategiesByName;
+
+    public PaymentService(Instance<PaymentStrategy> paymentStrategies) {
+        this.paymentStrategiesByName = paymentStrategies.stream().collect(Collectors.toMap(PaymentStrategy::name, Function.identity()));
+    }
+
+    public void pay(PaymentRequest paymentRequest) {
+        var paymentStrategy = Optional
+            .ofNullable(paymentStrategiesByName.get(paymentRequest.paymentMethod()))
+            .orElseThrow(() -> new UnknownPaymentMethodException("Unknown payment method: %s".formatted(paymentRequest.name())));
+
+        paymentStrategy.pay(paymentRequest.amount());
+    }
+}
+                        `,
+                   label: 'Payment Service',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+With this implementation, we have built an enhanced **Strategy Design Pattern** for real-world applications. This example was implemented using Quarkus, but the same approach could be applied in Spring Boot or Micronaut as well.

@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 
 import { SmartImage, SmartLink, Text } from "@/once-ui/components";
 import { CodeBlock } from "@/once-ui/modules";
+import { InlineCode} from "@/once-ui/components";
 import { HeadingLink } from "@/components";
 
 import { TextProps } from "@/once-ui/interfaces";
@@ -140,6 +141,7 @@ const components = {
   a: CustomLink as any,
   Table,
   CodeBlock,
+  InlineCode,
 };
 
 type CustomMDXProps = MDXRemoteProps & {
