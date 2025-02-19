@@ -137,6 +137,7 @@ Each <InlineCode>PaymentStrategy</InlineCode> implementation must implement the 
            codeInstances={[
                {
                    code: `
+@ApplicationScoped
 public class CreditCardPayment implements PaymentStrategy {
     @Override
     public void name() {
@@ -149,6 +150,7 @@ public class CreditCardPayment implements PaymentStrategy {
     }
 }
 
+@ApplicationScoped
 public class PayPalPayment implements PaymentStrategy {
     @Override
     public void name() {
@@ -161,6 +163,7 @@ public class PayPalPayment implements PaymentStrategy {
     }
 }
 
+@ApplicationScoped
 public class CryptoPayment implements PaymentStrategy {
     @Override
     public void name() {
@@ -198,7 +201,7 @@ public class PaymentService {
     public void pay(PaymentRequest paymentRequest) {
         var paymentStrategy = Optional
             .ofNullable(paymentStrategiesByName.get(paymentRequest.paymentMethod()))
-            .orElseThrow(() -> new UnknownPaymentMethodException("Unknown payment method: %s".formatted(paymentRequest.name())));
+            .orElseThrow(() -> new UnknownPaymentMethodException("Unknown payment method:  " + paymentRequest.name()));
 
         paymentStrategy.pay(paymentRequest.amount());
     }
