@@ -1,0 +1,182 @@
+---
+title: "The importance of semantics when writing code"
+publishedAt: "2025-03-03"
+summary: "An exploration of how Java’s functional programming features, like lambdas and streams, impact code semantics, balancing conciseness with readability and maintainability."
+tag: "Software Architecture"
+---
+
+In recent years, we have seen several _classic_ programming languages evolve and adopt features from functional programming. These features have enabled software engineers to leverage their code, making it shorter, faster, and sometimes more readable. However, no strategy is a silver bullet, and each has its trade-offs. The best approach is knowing when not to use it.
+
+In Java, this evolution began with the release of Java 8, which introduced key functional programming features such as:
+
+- Lambda expressions
+- Streams API (<InlineCode>java.util.stream</InlineCode>)
+- Functional Interfaces (<InlineCode>java.util.function</InlineCode>) such as <InlineCode>Predicate</InlineCode>, <InlineCode>Function</InlineCode> and <InlineCode>Consumer</InlineCode>
+
+In this case, we will focus on how programming languages have lost some of their semantics due to this phenomenon. We will also discuss when it is appropriate to write _cool_ code and when to step back to more primitive approaches. While our primary focus will be Java, the concepts explained here can be applied to many modern programming languages.
+
+## When to use lamda expressions
+
+Lambda expressions influence code semantics by shifting the focus from explicit structure to behavior. This is useful when dealing with simple actions. However, the more code we add to a lambda function, the less readable it becomes, and the more we need to add semantics to improve clarity.
+
+- They reduce boilerplate, emphasizing what the code does rather than how.
+
+    <CodeBlock className="my-12"
+               compact
+               codeInstances={[
+                   {
+                       code: `Comparator<String> comparator = (s1, s2) -> s1.length() - s2.length();`,
+                       label: 'Short lambda',
+                       language: 'java'
+                   }
+               ]}
+               copyButton
+    />
+
+- They make operations like filtering and transformations more intuitive when using streams.
+
+    <CodeBlock className="my-12"
+               compact
+               codeInstances={[
+                   {
+                       code: `names.stream().filter(name -> name.startsWith("A")).forEach(System.out::println);`,
+                       label: 'Short lambda in stream',
+                       language: 'java'
+                   }
+               ]}
+               copyButton
+    />
+
+On the other hand:
+
+- Their anonymous and inline nature makes stack traces harder to interpret.
+
+- As lambdas grow in size, they also increase in complexity, making readability suffer compared to named methods. The more code we write, the more semantics we need to ensure clarity.
+
+    <CodeBlock className="my-12"
+               compact
+               codeInstances={[
+                   {
+                       code: `public void foo(String bar) {
+        Function<String, String> validate = str -> {
+            if (str.isEmpty()) return "Empty";
+            return str.length() > 10 ? "Too long" : "Valid";
+        };
+        if (validate.apply(bar)) {
+            System.out.println("Valid input!");
+        }
+    }`,
+                       label: 'Complex lambda usage',
+                       language: 'java'
+                   }
+               ]}
+               copyButton
+    />
+
+    <CodeBlock className="my-12"
+               compact
+               codeInstances={[
+                   {
+                       code: `public void foo(String bar) {
+        if (isValidString(bar)) {
+            System.out.println("Valid input!");
+        }
+    }
+
+    private String isValidString(String str) {
+       if (str.isEmpty()) return "Empty";
+       return str.length() > 10 ? "Too long" : "Valid";
+    }`,
+                       label: 'Complex lambda usage refactored',
+                       language: 'java'
+                   }
+               ]}
+               copyButton
+    />
+
+    By adding a named function, we enhance semantics and improve code readability.
+
+Lambda expressions offer many advantages and trade-offs, including considerations related to performance, garbage collection, and other factors that must be balanced with readability.
+
+## Using streams wisely
+
+Java Streams is an incredible feature. Since its introduction, a lot of boilerplate code has been reduced, and in most cases, when used carefully, it makes the code more readable and concise.
+
+For example, before Java 8, iterating over a list and modifying its elements required explicit loops and temporary collections:
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `public List<String> foo(List<String> bar, String prefix) {
+    List<String> list = new ArrayList<>();
+    for (String element : bar) {
+        list.add(prefix + element);
+    }
+    return list;
+}`,
+                   label: 'Before Java 8 map',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+With the introduction of Streams in Java 8, the same logic can be expressed in a more compact and functional way:
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `public List<String> foo(List<String> bar, String prefix) {
+    return bar.stream()
+        .map(element -> prefix + element)
+        .collect(Collectors.toList());
+}`,
+                   label: 'After Java 8 map',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+This approach not only reduces boilerplate code but also enhances readability by making the transformation process more declarative. However, while Streams improve code clarity in many cases, there are situations where complex operations or performance-critical sections require extra attention.
+
+For instance, take a look at the following example using Streams:
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `stringList.stream()
+    .filter(string -> string.size() > 5)
+    .map(String::toUpperCase)
+    .forEach(string -> System.out.println(string));`,
+                   label: 'Complex stream usage',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+While this is concise, some developers might find it less intuitive compared to traditional loops. In such cases, using <InlineCode>for</InlineCode> and <InlineCode>if</InlineCode> statements can make the code more immediately understandable:
+
+<CodeBlock className="my-12"
+           compact
+           codeInstances={[
+               {
+                   code: `for (String string : stringList) {
+    if (string.size() > 5) System.out.println(string.toUpperCase());
+}`,
+                   label: 'Complex stream usage refactored',
+                   language: 'java'
+               }
+           ]}
+           copyButton
+/>
+
+Ultimately, the best approach depends on the specific context and the balance between readability and conciseness. Streams are a powerful tool, but they should be used where they truly add value.
+
+## Conclusion
+
+Code semantics are crucial for clarity, maintainability, and debugging. Well-structured code is easier to analyze and understand, reducing confusion. While lambda expressions and Streams minimize boilerplate, excessive use can harm readability. Balancing conciseness and clarity enhances software quality and makes it more maintainable in the long run.
