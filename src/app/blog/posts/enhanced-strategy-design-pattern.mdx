@@ -36,11 +36,9 @@ Instead of writing all payment logic in one place, you:
            compact
            codeInstances={[
                {
-                   code: `
-public interface PaymentStrategy {
+                   code: `public interface PaymentStrategy {
     void pay(double amount);
-}
-                   `,
+}`,
                    label: 'Strategy Interface',
                    language: 'java'
                }
@@ -52,8 +50,7 @@ public interface PaymentStrategy {
            compact
            codeInstances={[
                {
-                   code: `
-public class CreditCardPayment implements PaymentStrategy {
+                   code: `public class CreditCardPayment implements PaymentStrategy {
     @Override
     public void pay(double amount) {
         System.out.println("Paid $" + amount + " using Credit Card.");
@@ -72,8 +69,7 @@ public class CryptoPayment implements PaymentStrategy {
     public void pay(double amount) {
         System.out.println("Paid $" + amount + " using Cryptocurrency.");
     }
-}
-                        `,
+}`,
                    label: 'Strategy Implementations',
                    language: 'java'
                }
@@ -95,13 +91,11 @@ Here's an example of an HTTP request body being deserialized using the following
            compact
            codeInstances={[
                {
-                   code: `
-public record PaymentRequest(
+                   code: `public record PaymentRequest(
     double amount,
     String paymentMethod
 ) {
-}
-                        `,
+}`,
                    label: 'Payment Request',
                    language: 'java'
                }
@@ -117,12 +111,10 @@ First, we need to extend the <InlineCode>PaymentStrategy</InlineCode> interface 
            compact
            codeInstances={[
                {
-                   code: `
-public interface PaymentStrategy {
+                   code: `public interface PaymentStrategy {
     String name();
     void pay(double amount);
-}
-                        `,
+}`,
                    label: 'Strategy Interface',
                    language: 'java'
                }
@@ -136,8 +128,7 @@ Each <InlineCode>PaymentStrategy</InlineCode> implementation must implement the 
            compact
            codeInstances={[
                {
-                   code: `
-@ApplicationScoped
+                   code: `@ApplicationScoped
 public class CreditCardPayment implements PaymentStrategy {
     @Override
     public void name() {
@@ -174,8 +165,7 @@ public class CryptoPayment implements PaymentStrategy {
     public void pay(double amount) {
         System.out.println("Paid $" + amount + " using Cryptocurrency.");
     }
-}
-                        `,
+}`,
                    label: 'Strategy Implementations',
                    language: 'java'
                }
@@ -189,8 +179,7 @@ Next, we inject all implementations into a <InlineCode>PaymentService</InlineCod
            compact
            codeInstances={[
                {
-                   code: `
-@ApplicationScoped
+                   code: `@ApplicationScoped
 public class PaymentService {
     private final Map<String, PaymentStrategy> paymentStrategiesByName;
 
@@ -205,8 +194,7 @@ public class PaymentService {
 
         paymentStrategy.pay(paymentRequest.amount());
     }
-}
-                        `,
+}`,
                    label: 'Payment Service',
                    language: 'java'
                }
