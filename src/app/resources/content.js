@@ -6,7 +6,7 @@ const person = {
   get name() {
     return `${this.firstName} ${this.lastName}`;
   },
-  role: "Software Architect",
+  role: "Software Engineer & Architect",
   avatar: "/images/avatar.JPEG",
   location: "Europe/Spain", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
   languages: ["Spanish", "English", "Catalan"], // optional: Leave the array empty if you don't want to display languages
@@ -52,11 +52,11 @@ const home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Software architect and fan of dissemination</>,
+  headline: <>I architect software like I build IKEA furniture, only with fewer leftover pieces.</>,
   subline: (
     <>
-      I'm Álvaro, a software engineer currently working at <InlineCode>Tymit</InlineCode>.
-      <br /> At the moment I'm being tutored as a software architect in the Master's Degree of Software Development and Architecture at <InlineCode>La Salle</InlineCode>.
+      I'm Álvaro, a software engineer currently working at <InlineCode>Tymit</InlineCode> and being tutored as a
+      software architect in the Master's Degree in Software Development and Architecture at <InlineCode>La Salle</InlineCode>.
     </>
   ),
 };
@@ -81,8 +81,10 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Álvaro is a software architect based in Spain with a passion for transforming
-        complex challenges into simple, versatile, and scalable architecture solutions.
+        Álvaro is a software engineer and architect with a strong focus on designing scalable and efficient systems.
+        Passionate about continuous learning and collaboration, he actively engages with the tech community, sharing
+        knowledge and staying up to date with industry trends. He values the power of teamwork and innovation, believing
+        that the best solutions come from exchanging ideas and experiences with other professionals.
       </>
     ),
   },
