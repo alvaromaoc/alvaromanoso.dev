@@ -139,6 +139,51 @@ const about = {
       },
     ],
   },
+  otherRelevantExperience: {
+    display: true, // set to false to hide this section
+    title: "Other relevant experience",
+    experiences: [
+      {
+        company: "Board of European Students of Technology",
+        timeframe: "2023 - 2024",
+        role: "Head of Corporate Relations Department",
+        achievements: [
+          <>
+            Led the Week of Engineering Competition, generating €17K in revenue and connecting around 200 students
+            with top companies in Spain’s technology sector.
+          </>,
+          <>
+            Established over 20 new partnerships, steering the association toward a more resilient,
+            sustainable, and profitable future, beyond its mission and milestones.
+          </>,
+          <>
+            Promoted and facilitated training for association members in fiscal matters, public speaking,
+            and negotiation skills, enhancing their professional growth and contributions to the association’s goals.
+          </>,
+        ],
+        images: [
+          {
+            src: "/images/work/WEC_Closing.jpeg",
+            alt: "Week of Engineering Competition closing",
+            width: 16,
+            height: 9,
+          },
+          {
+            src: "/images/work/WEC_BEC_topic-team.JPG",
+            alt: "Week of Engineering Competition topic team",
+            width: 16,
+            height: 9,
+          },
+          {
+            src: "/images/work/WEC_BEC_me-talking.JPG",
+            alt: "Week of Engineering Competition Álvaro presenting",
+            width: 16,
+            height: 9,
+          }
+        ],
+      },
+    ],
+  },
   studies: {
     display: true, // set to false to hide this section
     title: "Studies",
