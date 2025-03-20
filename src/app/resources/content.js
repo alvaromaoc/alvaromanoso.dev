@@ -181,6 +181,12 @@ const about = {
             alt: "Week of Engineering Competition Álvaro presenting",
             width: 16,
             height: 9,
+          },
+          {
+            src: "/images/work/WEC_Closing_final-speech.JPG",
+            alt: "Week of Engineering Competition Álvaro doing the final speech of the closing ceremony",
+            width: 16,
+            height: 9,
           }
         ],
       },
