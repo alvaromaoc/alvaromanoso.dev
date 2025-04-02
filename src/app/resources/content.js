@@ -121,8 +121,16 @@ const about = {
         role: "Junior Software Engineer",
         achievements: [
           <>
+            Played a key role in the migration of an on-prem architecture to Google Cloud Platform (GCP), improving
+            scalability, security, and cost efficiency.
+          </>,
+          <>
             Built an entire end-to-end CI/CD pipeline with GitHub Actions, integrating SDLC controls
             that reduced delivery time by a factor of 14.
+          </>,
+          <>
+            Led an initiative to integrate hexagonal architecture practices, improving code maintainability and
+            modularity while providing knowledge transfer (KT) sessions to the team.
           </>,
         ],
         images: [],
