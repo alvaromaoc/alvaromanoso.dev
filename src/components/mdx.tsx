@@ -129,6 +129,25 @@ function createParagraph({ children }: TextProps) {
   );
 }
 
+const CustomBlockquote = ({ children }: { children: React.ReactNode }) => {
+  return (
+      <blockquote style={{
+        borderLeft: '4px solid #ccc',
+        paddingLeft: '1em',
+        marginTop: 'var(--static-space-8)',
+        marginBottom: 'var(--static-space-12)',
+        opacity: 0.8,
+        background: 'rgba(255,255,255,0.2)',
+        marginBlockStart: '0',
+        marginBlockEnd: '0',
+        marginInlineStart: '0',
+        marginInlineEnd: '0',
+      }}>
+        {children}
+      </blockquote>
+  );
+};
+
 const components = {
   p: createParagraph as any,
   h1: createHeading(1) as any,
@@ -142,6 +161,7 @@ const components = {
   Table,
   CodeBlock,
   InlineCode,
+  blockquote: CustomBlockquote as any,
 };
 
 type CustomMDXProps = MDXRemoteProps & {
